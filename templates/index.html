@@ -1,70 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+    
+    <!-- Character Set and Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>SuperNova - V1.1</title>
+    
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            background-color: black; /* Terminal black background */
-            color: #00076f; /* Terminal green text color */
-            font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal feel */
+            background: linear-gradient(to bottom right, #1d1d1d, #3a3a3a);
+            color: #87CEEB;
+            font-family: 'Poppins', sans-serif;
             padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Glow effect for all text */
         h1, h2, p {
-            text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f; /* Bright  glow */
+            text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f;
+            text-align: center;
+        }
+
+        .controls {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
         }
 
         input, button {
-            background-color: black; /* Input and button background */
-            color: #87CEEB; /* Input and button text color */
-            border: 1px solid #87CEEB; /* Border color */
-            padding: 5px;
-            font-family: 'Courier New', Courier, monospace; /* Same font */
+            background-color: black;
+            color: #87CEEB;
+            border: 1px solid #87CEEB;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            margin-right: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         input:focus, button:focus {
-            outline: none; /* Remove focus outline */
-        }
-
-        #output {
-            background-color: black; /* Output area background */
-            color: #87CEEB; /* Output text color */
-            border: 1px solid #87CEEB; /* Border color */
-            padding: 10px;
-            white-space: pre-wrap; /* Preserve whitespace */
-            max-height: 300px; /* Limit height */
-            overflow-y: auto; /* Enable vertical scrolling */
-        }
-
-        h1, h2 {
-            color: #87CEEB; /* Heading color */
+            outline: none;
+            border-color: #9d00ff;
         }
 
         button {
-            cursor: pointer; /* Change cursor on hover */
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #output {
+            background-color: black;
+            color: #87CEEB;
+            border: 1px solid #87CEEB;
+            padding: 10px;
+            white-space: pre-wrap;
+            height: 400px;
+            width: 100%;
+            overflow-y: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        h1, h2 {
+            color: #87CEEB;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .button-container button {
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 50px;
+            animation: rotate-scale-color 3s infinite ease-in-out;
+        }
+
+        @keyframes rotate-scale-color {
+            0% {
+                transform: scale(2);
+                color: white;
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            25% {
+                color: white;
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            50% {
+                color: white;
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            75% {
+                color: white;
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            100% {
+                transform: scale(2);
+                color: white;
+                text-shadow: 0 0 10px #9d00ff;
+            }
+        }
+
+        /* New styles for dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px; /* Adjust as needed */
+        }
+
+        .dropbtn {
+            background-color: #000; /* Button background color */
+            color: #87CEEB; /* Button text color */
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dropbtn:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            animation: fadeIn 0.5s; /* Animation effect */
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .dropdown-content a {
+            color: #87CEEB;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Hover effect for links */
+        }
+
+        .show {
+            display: block; /* Show the dropdown */
         }
     </style>
 </head>
-
 <body>
     <h1>SuperNova - V1.1</h1>
-    <a href="https://github.com/ArcticHonour/SuperNova" style="color: grey;">https://github.com/ArcticHonour/SuperNova </a>
-    <h2>URL<h2>
+    <a href="https://github.com/ArcticHonour/SuperNova" style="color: grey;">https://github.com/ArcticHonour/SuperNova</a>
+
+    <h2>URL</h2>
     <img rel="image" src="{{ url_for('static', filename='icon.png') }}" style="width: 100px; height: 100px; position: absolute; top: 10px; right: 10px;">
-    <input type="text" id="ngrok-input" placeholder="Enter ngrok URLs separated by commas">
-    <button id="set-ngrok">Set URLs</button>
+
+    <div class="controls">
+        <input type="text" id="ngrok-input" placeholder="Enter ngrok URLs separated by commas">
+        <button id="set-ngrok">Set URLs</button>
+    </div>
 
     <h2>Send Command</h2>
-    <input type="text" id="command-input" placeholder="Enter command">
-    <button id="send-command">Send Command</button>
+    <div class="controls">
+        <input type="text" id="command-input" placeholder="Enter command">
+        <button id="send-command">Send Command</button>
+        <button id="clear-console">Clear Console</button>
+    </div>
 
     <h2>Output</h2>
     <div id="output"></div>
+
+    <!-- Dropdown button -->
+    <div class="dropdown" style="position: absolute; top: 10px; right: 120px;">
+        <button class="dropbtn" onclick="toggleDropdown()">Options</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" onclick="navigateTo('/bots')">Bots</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
@@ -80,11 +223,25 @@
             // Function to handle command sending
             function sendCommand() {
                 const command = $('#command-input').val();
-                $.post('/send_command', { command: command }, function(data) {
-                    $('#output').append(data.results.join("\n") + "\n");
-                    $('#output').scrollTop($('#output')[0].scrollHeight); // Auto scroll to bottom
-                });
+                if (command.toLowerCase() === 'clear') {
+                    $('#output').append('clear\n'); // Display the "clear" command
+                    clearConsole(false); // Clear the console without removing the "clear" command itself
+                } else {
+                    $.post('/send_command', { command: command }, function(data) {
+                        $('#output').append(data.results.join("\n") + "\n");
+                    });
+                }
+                $('#output').scrollTop($('#output')[0].scrollHeight); // Auto scroll to bottom
                 $('#command-input').val(''); // Clear the command input field
+            }
+
+            // Function to clear the console
+            function clearConsole(removeCommand = true) {
+                if (removeCommand) {
+                    $('#output').html(''); // Clear the output area
+                } else {
+                    $('#output').html('\n'); // Keep "clear" command visible
+                }
             }
 
             // Click event for Set URLs button
@@ -92,6 +249,11 @@
 
             // Click event for Send Command button
             $('#send-command').click(sendCommand);
+
+            // Click event for Clear Console button
+            $('#clear-console').click(function() {
+                clearConsole();
+            });
 
             // Keydown event for ngrok input
             $('#ngrok-input').keydown(function(event) {
@@ -109,6 +271,29 @@
                 }
             });
         });
+
+        // Function to toggle dropdown
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Function to navigate to a new page
+        function navigateTo(url) {
+            window.location.href = url; // Redirect to the new URL
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>

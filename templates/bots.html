@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bots Page</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #1d1d1d, #3a3a3a);
+            color: #87CEEB;
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #87CEEB;
+            text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid #87CEEB;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        p {
+            color: #87CEEB;
+        }
+
+        /* Button styling */
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: black; /* Button background */
+            color: #87CEEB; /* Button text color */
+            border: 1px solid #87CEEB; /* Button border color */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+            transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Change background on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Bots Page</h1>
+    <p>Welcome to the Bots page!</p>
+    <p>Here you can manage your bots and their configurations.</p>
+
+    <!-- Table for displaying ngrok URLs and usernames -->
+    <table>
+        <thead>
+            <tr>
+                <th>Ngrok URL</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for url, username in bots.items() %}
+            <tr>
+                <td>{{ url }}</td>
+                <td>{{ username }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Back to Home Button -->
+    <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+</body>
+</html>
