@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+    
+    <!-- Character Set and Viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>SuperNova - V1.1</title>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #1d1d1d, #3a3a3a);
+            color: #B0E0E6; /* Less bright color */
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 70px; /* Larger font size */
+            text-shadow: 0 0 10px #B0E0E6, 0 0 20px #B0E0E6, 0 0 30px #00076f; /* Glowing effect */
+            text-align: center;
+            animation: rotate-scale-color 3s infinite ease-in-out;
+        }
+
+        h2, p {
+            font-size: 24px; /* Larger font size for h2 and p */
+            /* Removed text shadow for paragraph */
+            text-align: center;
+        }
+
+        .controls {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        input, button {
+            background-color: black;
+            color: #B0E0E6; /* Less bright color */
+            border: 1px solid #B0E0E6;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            margin-right: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input:focus, button:focus {
+            outline: none;
+            border-color: #9d00ff;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* New styles for dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .dropbtn {
+            background-color: #000;
+            color: #B0E0E6; /* Less bright color */
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dropbtn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .dropdown-content a {
+            color: #B0E0E6; /* Less bright color */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown" style="position: absolute; top: 10px; right: 120px;">
+        <button class="dropbtn" onclick="toggleDropdown()">Options</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" onclick="navigateTo('/bots')">Bots</a>
+            <a href="#" onclick="navigateTo('/DDOS')">DDOS</a>
+            <a href="#" onclick="navigateTo('/status')">status codes</a>
+            <a href="#">Option 4</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle dropdown
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Function to navigate to a new page
+        function navigateTo(url) {
+            window.location.href = url; // Redirect to the new URL
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+    <h1>HTTP Status Codes</h1>
+
+    <div class="status-code">
+        <p><strong>100</strong> Continue</p>
+        <p>The initial part of a request has been received and has not yet been rejected by the server.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>101</strong> Switching Protocols</p>
+        <p>The server is switching protocols as requested by the client.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>102</strong> Processing</p>
+        <p>The server has received and is processing the request, but no response is available yet.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>103</strong> Early Hints</p>
+        <p>Used to return some response headers before the final response.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>200</strong> OK</p>
+        <p>The request has succeeded.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>201</strong> Created</p>
+        <p>The request has succeeded and a new resource has been created as a result.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>202</strong> Accepted</p>
+        <p>The request has been accepted for processing, but the processing has not been completed.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>203</strong> Non-Authoritative Information</p>
+        <p>The server successfully processed the request, but is returning information that may be from another source.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>204</strong> No Content</p>
+        <p>The server successfully processed the request, but is not returning any content.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>205</strong> Reset Content</p>
+        <p>The server successfully processed the request, but is not returning any content and requires the requester to reset the document view.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>206</strong> Partial Content</p>
+        <p>The server is delivering only part of the resource due to a range header sent by the client.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>207</strong> Multi-Status</p>
+        <p>Provides status for multiple independent operations.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>208</strong> Already Reported</p>
+        <p>The members of a DAV binding have already been enumerated in a previous response, and are not being included again.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>226</strong> IM Used</p>
+        <p>The server has fulfilled a GET request for the resource, and the response is a representation of the status of the message.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>300</strong> Multiple Choices</p>
+        <p>There are multiple options for the resource from which the client may choose.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>301</strong> Moved Permanently</p>
+        <p>This and all future requests should be directed to the given URI.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>302</strong> Found</p>
+        <p>The requested resource resides temporarily under a different URI.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>303</strong> See Other</p>
+        <p>The response to the request can be found under another URI using the GET method.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>304</strong> Not Modified</p>
+        <p>The resource has not been modified since the last request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>307</strong> Temporary Redirect</p>
+        <p>The requested resource resides temporarily under a different URI and the client should use the same method for future requests.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>308</strong> Permanent Redirect</p>
+        <p>The request and all future requests should be repeated using another URI.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>400</strong> Bad Request</p>
+        <p>The server cannot or will not process the request due to a client error.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>401</strong> Unauthorized</p>
+        <p>The request has not been applied because it lacks valid authentication credentials for the target resource.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>402</strong> Payment Required</p>
+        <p>Reserved for future use. It is currently not implemented.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>403</strong> Forbidden</p>
+        <p>The server understood the request but refuses to authorize it.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>404</strong> Not Found</p>
+        <p>The requested resource could not be found but may be available in the future.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>405</strong> Method Not Allowed</p>
+        <p>A request method is not supported for the requested resource.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>406</strong> Not Acceptable</p>
+        <p>The server cannot produce a response matching the list of acceptable values defined in the request's headers.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>407</strong> Proxy Authentication Required</p>
+        <p>The client must first authenticate itself with the proxy.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>408</strong> Request Timeout</p>
+        <p>The server timed out waiting for the request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>409</strong> Conflict</p>
+        <p>The request could not be completed due to a conflict with the current state of the resource.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>410</strong> Gone</p>
+        <p>The requested resource is no longer available at the server and no forwarding address is known.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>411</strong> Length Required</p>
+        <p>The server refuses to accept the request without a defined Content-Length header.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>412</strong> Precondition Failed</p>
+        <p>The server does not meet one of the preconditions that the requester put on the request header fields.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>413</strong> Content Too Large</p>
+        <p>The request is larger than the server is willing or able to process.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>414</strong> URI Too Long</p>
+        <p>The URI provided was too long for the server to process.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>415</strong> Unsupported Media Type</p>
+        <p>The request entity has a media type which the server or resource does not support.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>416</strong> Range Not Satisfiable</p>
+        <p>The server cannot provide a response that matches the range requested by the client.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>417</strong> Expectation Failed</p>
+        <p>The server cannot meet the requirements of the Expect request-header field.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>418</strong> I'm a teapot</p>
+        <p>The server refuses the attempt to brew coffee with a teapot.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>421</strong> Misdirected Request</p>
+        <p>The request was directed at a server that is not able to produce a response.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>422</strong> Unprocessable Content</p>
+        <p>The server understands the content type of the request entity, and the syntax is correct, but it was unable to process the contained instructions.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>423</strong> Locked</p>
+        <p>The resource that is being accessed is locked.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>424</strong> Failed Dependency</p>
+        <p>The method could not be performed on the resource because the requested action depended on another action and that action failed.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>425</strong> Too Early</p>
+        <p>The server is unwilling to risk processing a request that might be replayed.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>426</strong> Upgrade Required</p>
+        <p>The client should switch to a different protocol such as TLS/1.0.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>428</strong> Precondition Required</p>
+        <p>The origin server requires the request to be conditional.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>429</strong> Too Many Requests</p>
+        <p>The user has sent too many requests in a given amount of time.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>431</strong> Request Header Fields Too Large</p>
+        <p>The server is unwilling to process the request because its header fields are too large.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>451</strong> Unavailable For Legal Reasons</p>
+        <p>The user requests an illegal resource.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>500</strong> Internal Server Error</p>
+        <p>The server encountered an unexpected condition that prevented it from fulfilling the request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>501</strong> Not Implemented</p>
+        <p>The server does not support the functionality required to fulfill the request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>502</strong> Bad Gateway</p>
+        <p>The server, while acting as a gateway or proxy, received an invalid response from the upstream server.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>503</strong> Service Unavailable</p>
+        <p>The server is currently unable to handle the request due to temporary overloading or maintenance of the server.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>504</strong> Gateway Timeout</p>
+        <p>The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>505</strong> HTTP Version Not Supported</p>
+        <p>The server does not support the HTTP protocol version that was used in the request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>506</strong> Variant Also Negotiates</p>
+        <p>The server has an internal configuration error: transparent content negotiation for the request results in a circular reference.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>507</strong> Insufficient Storage</p>
+        <p>The method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>508</strong> Loop Detected</p>
+        <p>The server detected an infinite loop while processing a request.</p>
+    </div>
+
+    <div class="status-code">
+        <p><strong>510</strong> Not Extended</p>
+        <p>Further extensions to the request are required for the server to fulfill it.</p>
+    </div>
+    <div class="button-container">
+        <button onclick="window.location.href='/bots'">Go to Bots</button>
+        <button onclick="window.location.href='/'">Home</button>
+        <button onclick="window.location.href='/DDOS'">How to ddos</button>
+    </div>
+</body>
+</html>

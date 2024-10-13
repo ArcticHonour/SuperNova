@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+    
+    <!-- Character Set and Viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>SuperNova - V1.1</title>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #1d1d1d, #3a3a3a);
+            color: #B0E0E6; /* Less bright color */
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 70px; /* Larger font size */
+            text-shadow: 0 0 10px #B0E0E6, 0 0 20px #B0E0E6, 0 0 30px #00076f; /* Glowing effect */
+            text-align: center;
+            animation: rotate-scale-color 3s infinite ease-in-out;
+        }
+
+        h2, p {
+            font-size: 24px; /* Larger font size for h2 and p */
+            /* Removed text shadow for paragraph */
+            text-align: center;
+        }
+
+        .controls {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        input, button {
+            background-color: black;
+            color: #B0E0E6; /* Less bright color */
+            border: 1px solid #B0E0E6;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            margin-right: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input:focus, button:focus {
+            outline: none;
+            border-color: #9d00ff;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* New styles for dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .dropbtn {
+            background-color: #000;
+            color: #B0E0E6; /* Less bright color */
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dropbtn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dropdown-content a {
+            color: #B0E0E6; /* Less bright color */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dropdown" style="position: absolute; top: 10px; right: 120px;">
+        <button class="dropbtn" onclick="toggleDropdown()">Options</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" onclick="navigateTo('/bots')">Bots</a>
+            <a href="#" onclick="navigateTo('/DDOS')">DDOS</a>
+            <a href="#" onclick="navigateTo('/status')">status codes</a>
+            <a href="#">Option 4</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle dropdown
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Function to navigate to a new page
+        function navigateTo(url) {
+            window.location.href = url; // Redirect to the new URL
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+    <h1>How to DDoS?</h1>
+    <div class="controls">
+        <p>Using the req command, format it as follows:<br>
+            <code>req &lt;URL&gt; &lt;duration&gt;</code>.<br>
+            The <code>&lt;URL&gt;</code> is the full URL of the target you want to send requests to, including the protocol (either <code>http://</code> or <code>https://</code>), e.g., <code>http://127.0.0.1:5000</code>.<br>
+            The <code>&lt;duration&gt;</code> specifies the duration (in seconds) for which the requests will be sent to the target URL.<br>
+            For example, to send requests for 60 seconds, specify 60.<br>
+            Example usage:<br>
+            <code>req http://127.0.0.1:5000 60</code> will send requests to <code>http://127.0.0.1:5000</code> for 60 seconds.
+        </p>
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='/bots'">Go to Bots</button>
+        <button onclick="window.location.href='/'">Home</button>
+    </div>
+
+</body>
+</html>

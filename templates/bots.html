@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+    
+    <!-- Character Set and Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bots Page</title>
+    
+    <title>SuperNova - Bot Configurations</title>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -11,7 +19,7 @@
     <style>
         body {
             background: linear-gradient(to bottom right, #1d1d1d, #3a3a3a);
-            color: #87CEEB;
+            color: #87CEEB; /* Color for body text */
             font-family: 'Poppins', sans-serif;
             padding: 20px;
             margin: 0;
@@ -21,53 +29,113 @@
         }
 
         h1 {
-            color: #87CEEB;
+            font-size: 50px;
+            animation: rotate-scale-color 3s infinite ease-in-out;
+            color: white; /* Keep h1 white */
             text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f;
+            text-align: center;
+        }
+        
+        @keyframes rotate-scale-color {
+            0% {
+                transform: scale(2);
+                color: white; /* Keep h1 white */
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            25% {
+                color: white; /* Keep h1 white */
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            50% {
+                color: white; /* Keep h1 white */
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            75% {
+                color: white; /* Keep h1 white */
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            100% {
+                transform: scale(2);
+                color: white; /* Keep h1 white */
+                text-shadow: 0 0 10px #9d00ff;
+            }
+        }
+
+        p {
+            color: #87CEEB; /* Color for paragraphs */
+            margin: 10px 0;
         }
 
         table {
             margin-top: 20px;
             border-collapse: collapse;
             width: 80%;
+            background-color: black; /* Set table background to black */
         }
 
         th, td {
-            border: 1px solid #87CEEB;
+            border: 1px solid #87CEEB; /* Updated border color */
             padding: 10px;
             text-align: left;
+            color: #87CEEB; /* Color for table text */
         }
 
         th {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.1); /* Keep header background */
         }
 
         tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.05); /* Keep alternating row background */
         }
 
-        p {
-            color: #87CEEB;
-        }
-
-        /* Button styling */
-        .back-button {
-            margin-top: 20px;
+        button {
+            background-color: black; /* Button background color */
+            color: #87CEEB; /* Keep light blue for button text */
+            border: 2px solid #87CEEB; /* Updated border color */
             padding: 10px 20px;
-            background-color: black; /* Button background */
-            color: #87CEEB; /* Button text color */
-            border: 1px solid #87CEEB; /* Button border color */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor */
-            transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
 
-        .back-button:hover {
-            background-color: rgba(255, 255, 255, 0.1); /* Change background on hover */
+        button:hover {
+            background-color: #87CEEB; /* Hover color for buttons */
+            color: black; /* Dark color for button text on hover */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(135, 206, 235, 0.7);
+        }
+
+        .remove-button {
+            background-color: black; /* Background for remove button */
+            color: #d9534f; /* Color for remove button text */
+            border: 2px solid #d9534f; /* Color for remove button border */
+        }
+
+        .remove-button:hover {
+            background-color: #d9534f; /* Hover color for remove button */
+            color: black; /* Dark color for remove button text on hover */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(217, 83, 79, 0.7);
+        }
+
+        #remove-404 {
+            margin-left: 10px;
+        }
+
+        #go-home {
+            margin-top: 20px;
+        }
+
+        #live-status {
+            color: #87CEEB; /* Updated color for live status text */
+            font-weight: bold;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Bots Page</h1>
+    <h1>Bot configuration</h1>
     <p>Welcome to the Bots page!</p>
     <p>Here you can manage your bots and their configurations.</p>
 
@@ -77,6 +145,7 @@
             <tr>
                 <th>Ngrok URL</th>
                 <th>Username</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -84,12 +153,73 @@
             <tr>
                 <td>{{ url }}</td>
                 <td>{{ username }}</td>
+                <td>
+                    <button class="remove-button" onclick="removeUrl('{{ url }}')">Remove</button>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <!-- Back to Home Button -->
-    <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+    <!-- Button to remove 404 URLs -->
+    <div style="margin-top: 20px; display: flex; align-items: center;">
+        <button id="remove-404">Remove 404 URLs</button>
+        <span id="live-status">Live Status: Checking...</span>
+    </div>
+
+    <!-- Button to go back to the home page -->
+    <button id="go-home" onclick="location.href='/'">Go Back to Home</button>
+
+    <script>
+        function removeUrl(url) {
+            fetch('/remove_url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    location.reload();
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        document.getElementById('remove-404').addEventListener('click', function() {
+            fetch('/remove_404', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+
+        function checkLiveStatus() {
+            fetch('/live_status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('live-status').innerText = `Live Status: ${data.status}`;
+                })
+                .catch((error) => {
+                    console.error('Error fetching live status:', error);
+                });
+        }
+
+        setInterval(checkLiveStatus, 5000);
+    </script>
 </body>
 </html>

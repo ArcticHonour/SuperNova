@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive World Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #map {
+            width: 80%; /* Adjusted width */
+            height: 70vh; /* Adjusted height */
+            margin: 20px 0; /* Spacing around the map */
+        }
+
+        #coordinates {
+            margin-bottom: 20px; /* Spacing below the form */
+        }
+
+        input {
+            margin-right: 10px; /* Spacing between inputs */
+            padding: 8px;
+        }
+
+        button {
+            padding: 8px 12px;
+        }
+
+        .saved-coordinates {
+            margin-top: 20px;
+            width: 80%;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div id="coordinates">
+        <input type="number" id="latitude" placeholder="Latitude" step="any" required>
+        <input type="number" id="longitude" placeholder="Longitude" step="any" required>
+        <button id="saveCoords">Save Coordinates</button>
+    </div>
+
+    <div class="saved-coordinates" id="savedCoordinates">
+        <h3>Saved Coordinates:</h3>
+        <ul id="coordsList"></ul>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([20, 0], 2);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Function to highlight country on hover
+        const highlightFeature = (e) => {
+            const layer = e.target;
+            layer.setStyle({
+                fillColor: '#ffcc00',
+                weight: 5,
+                opacity: 1,
+                color: '#666',
+                dashArray: '',
+                fillOpacity: 0.7
+            });
+        };
+
+        // Function to reset country style on mouseout
+        const resetHighlight = (e) => {
+            geojson.resetStyle(e.target);
+        };
+
+        // Sample GeoJSON data (you can replace it with actual country data)
+        const countries = [
+            {
+                "type": "Feature",
+                "properties": { "name": "United States" },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[-119.4179, 36.7783], [-120.4179, 37.7783], [-121.4179, 36.7783], [-119.4179, 36.7783]]]
+                }
+            },
+            {
+                "type": "Feature",
+                "properties": { "name": "Canada" },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[-130.0, 60.0], [-130.0, 60.5], [-135.0, 60.5], [-135.0, 60.0]]]
+                }
+            },
+            // Add more country data here...
+        ];
+
+        // Create GeoJSON layer and add to map
+        const geojson = L.geoJSON(countries, {
+            style: () => ({
+                fillColor: '#cccccc',
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.5
+            }),
+            onEachFeature: (feature, layer) => {
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight,
+                });
+                layer.bindPopup(feature.properties.name);
+            }
+        }).addTo(map);
+
+        // Save coordinates functionality
+        const saveCoordsButton = document.getElementById('saveCoords');
+        const coordsList = document.getElementById('coordsList');
+
+        saveCoordsButton.addEventListener('click', () => {
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                // Create a list item for the saved coordinates
+                const listItem = document.createElement('li');
+                listItem.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                coordsList.appendChild(listItem);
+
+                // Optional: You can also add a marker to the map
+                L.marker([latitude, longitude]).addTo(map).bindPopup(`Lat: ${latitude}, Lng: ${longitude}`).openPopup();
+
+                // Clear the input fields
+                document.getElementById('latitude').value = '';
+                document.getElementById('longitude').value = '';
+            } else {
+                alert("Please enter valid coordinates.");
+            }
+        });
+    </script>
+</body>
+</html>
