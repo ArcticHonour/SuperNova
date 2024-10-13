@@ -2,16 +2,12 @@ from flask import Flask, render_template, request, jsonify
 import requests
 import os
 import signal
-import platform
-import time
-import threading
 
 app = Flask(__name__)
 
 # Global variables
 ngrok_urls = []
 bot_username = "Unknown_user"  # Assign your bot's username here
-running = True
 
 # Function to get the username of a worker
 def get_username(url):
@@ -88,8 +84,6 @@ def bots():
 
 # Signal handler for graceful shutdown
 def signal_handler(sig, frame):
-    global running
-    running = False
     print("Exiting...")
     os._exit(0)
 
