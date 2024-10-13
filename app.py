@@ -79,6 +79,13 @@ def send_command():
 
     return jsonify(results=results)
 
+# Route for the bots page
+@app.route('/bots')
+def bots():
+    # Create a dictionary mapping each ngrok URL to its username
+    bots = {url: get_username(url) for url in ngrok_urls}
+    return render_template('bots.html', bots=bots)  # Pass the bots dictionary to the template
+
 # Signal handler for graceful shutdown
 def signal_handler(sig, frame):
     global running
