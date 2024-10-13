@@ -9,15 +9,20 @@
     <style>
         body {
             background-color: black; /* Terminal black background */
-            color: #ADD8E6; /* Terminal green text color */
+            color: #00076f; /* Terminal green text color */
             font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal feel */
             padding: 20px;
         }
 
+        /* Glow effect for all text */
+        h1, h2, p {
+            text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f; /* Bright  glow */
+        }
+
         input, button {
             background-color: black; /* Input and button background */
-            color: #ADD8E6; /* Input and button text color */
-            border: 1px solid #ADD8E6; /* Border color */
+            color: #87CEEB; /* Input and button text color */
+            border: 1px solid #87CEEB; /* Border color */
             padding: 5px;
             font-family: 'Courier New', Courier, monospace; /* Same font */
         }
@@ -28,8 +33,8 @@
 
         #output {
             background-color: black; /* Output area background */
-            color: #ADD8E6; /* Output text color */
-            border: 1px solid #ADD8E6; /* Border color */
+            color: #87CEEB; /* Output text color */
+            border: 1px solid #87CEEB; /* Border color */
             padding: 10px;
             white-space: pre-wrap; /* Preserve whitespace */
             max-height: 300px; /* Limit height */
@@ -37,7 +42,7 @@
         }
 
         h1, h2 {
-            color: #ADD8E6; /* Heading color */
+            color: #87CEEB; /* Heading color */
         }
 
         button {
@@ -45,10 +50,12 @@
         }
     </style>
 </head>
+
 <body>
     <h1>SuperNova - V1.1</h1>
-    <a href="https://https://github.com/ArcticHonour/SuperNova" style="color: grey;">https://github.com/ArcticHonour/SuperNova </a>
+    <a href="https://github.com/ArcticHonour/SuperNova" style="color: grey;">https://github.com/ArcticHonour/SuperNova </a>
     <h2>URL<h2>
+    <img rel="image" src="{{ url_for('static', filename='icon.png') }}" style="width: 100px; height: 100px; position: absolute; top: 10px; right: 10px;">
     <input type="text" id="ngrok-input" placeholder="Enter ngrok URLs separated by commas">
     <button id="set-ngrok">Set URLs</button>
 
