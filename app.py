@@ -51,9 +51,14 @@ def launch_requests(url, duration):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/map')
 def map():
     return render_template('map.html')
+
+@app.route('/script_generator')
+def script_generator():
+    return render_template('gen.html')
 
 
 # Endpoint to set ngrok URLs
